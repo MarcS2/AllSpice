@@ -1,4 +1,5 @@
-namespace AllSpice.models;
+namespace AllSpice.Models;
+
 
 public class Recipe
 {

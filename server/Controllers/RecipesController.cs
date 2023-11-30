@@ -12,17 +12,5 @@ public class RecipesController : ControllerBase
     _recipesService = recipesService;
   }
 
-  [Authorize]
-  [HttpPost]
-  public async Task<ActionResult<Recipe>> CreateRecipe([FromBody] RecipesController recipeData)
-  {
-    try
-    {
 
-    }
-    catch (Exception error)
-    {
-      return BadRequest(error.Message);
-    }
-  }
 }
