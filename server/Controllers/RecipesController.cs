@@ -1,7 +1,7 @@
 namespace AllSpice.Controllers;
 
 [ApiController]
-[Router("api/[controller]")]
+[Route("api/[controller]")]
 
 public class RecipesController : ControllerBase
 {
