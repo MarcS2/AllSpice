@@ -13,7 +13,8 @@ CREATE TABLE
         id INT AUTO_INCREMENT PRIMARY KEY,
         title CHAR(255) NOT NULL,
         instructions CHAR(255) NOT NULL,
-        img VARCHAR(1000) NOT NULL,
+        imgUrl VARCHAR(1000) NOT NULL,
         category CHAR(255) NOT NULL,
-        creatorId VARCHAR(255) NOT NULL
+        creatorId VARCHAR(255) NOT NULL,
+        FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
     ) default charset utf8 COMMENT '';
