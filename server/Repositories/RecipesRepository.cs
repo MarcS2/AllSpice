@@ -2,6 +2,7 @@
 
 
 
+
 namespace AllSpice.Repositories;
 
 public class RecipesRepository
@@ -85,5 +86,13 @@ public class RecipesRepository
     _db.Execute(sql, originalRecipe);
 
 
+  }
+
+  internal string DeleteRecipe(int recipeId)
+  {
+    string sql = "DELETE FROM recipes WHERE id = @recipeId LIMIT 1;";
+
+    _db.Execute(sql, new { recipeId });
+    return "Your recipe has been deleted.";
   }
 }
