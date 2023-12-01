@@ -43,6 +43,6 @@ public class IngredientsService
   {
     Ingredient foundIngredient = GetIngredientById(ingredientId);
     string message = _repository.DeleteIngredient(ingredientId);
-    return (message);
+    return message;
   }
 }
