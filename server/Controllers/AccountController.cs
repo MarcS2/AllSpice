@@ -29,20 +29,20 @@ public class AccountController : ControllerBase
       return BadRequest(e.Message);
     }
   }
-  // [Authorize]
-  // [HttpGet("favorites")]
-  // public async Task<ActionResult<List<Favorite>>> GetFavoritesByAccountId()
-  // {
-  //   try
-  //   {
-  //     Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-  //     string userId = userInfo.Id;
-  //     List<Favorite> favorites = _favoritesService.GetFavoritesByAccountId(userId);
-  //     return Ok(favorites);
-  //   }
-  //   catch (Exception e)
-  //   {
-  //     return BadRequest(e.Message);
-  //   }
-  // }
+  [Authorize]
+  [HttpGet("favorites")]
+  public async Task<ActionResult<List<FavoriteRecipe>>> GetFavoritesByAccountId()
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string userId = userInfo.Id;
+      List<FavoriteRecipe> favorites = _favoritesService.GetFavoritesByAccountId(userId);
+      return Ok(favorites);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
 }
