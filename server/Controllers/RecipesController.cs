@@ -60,4 +60,18 @@ public class RecipesController : ControllerBase
       return BadRequest(e.Message);
     }
   }
+
+  [HttpPut("{recipeId}")]
+  public ActionResult<Recipe> UpdateRecipe(int recipeId, [FromBody] Recipe recipeData)
+  {
+    try
+    {
+      Recipe recipe = _recipesService.UpdateRecipe(recipeId, recipeData);
+      return Ok(recipe);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
+  }
 }

@@ -36,4 +36,16 @@ public class RecipesService
 
     return recipe;
   }
+
+  internal Recipe UpdateRecipe(int recipeId, Recipe recipeData)
+  {
+    Recipe originalRecipe = GetRecipeById(recipeId);
+    originalRecipe.Title = recipeData.Title ?? originalRecipe.Title;
+    originalRecipe.Instructions = recipeData.Instructions ?? originalRecipe.Instructions;
+    originalRecipe.Img = recipeData.Img ?? originalRecipe.Img;
+    originalRecipe.Category = recipeData.Category ?? originalRecipe.Category;
+
+    _repository.UpdateRecipe(originalRecipe);
+    return originalRecipe;
+  }
 }

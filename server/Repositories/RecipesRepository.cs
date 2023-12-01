@@ -1,6 +1,7 @@
 
 
 
+
 namespace AllSpice.Repositories;
 
 public class RecipesRepository
@@ -69,5 +70,20 @@ public class RecipesRepository
       return recipe;
     }, new { recipeId }).FirstOrDefault();
     return recipe;
+  }
+
+  internal void UpdateRecipe(Recipe originalRecipe)
+  {
+    string sql = @"
+      UPDATE recipes
+      SET 
+      title = @Title,
+      instructions = @Instructions,
+      img = @Img,
+      category = @Category
+      WHERE id = @Id;";
+    _db.Execute(sql, originalRecipe);
+
+
   }
 }
