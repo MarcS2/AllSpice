@@ -34,5 +34,6 @@ CREATE TABLE
         accountId VARCHAR(255) NOT NULL,
         recipeId INT NOT NULL,
         FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE CASCADE,
-        FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE
+        FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE,
+        UNIQUE(accountId, recipeId)
     ) default charset utf8 COMMENT '';
