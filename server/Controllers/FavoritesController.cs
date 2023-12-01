@@ -3,7 +3,7 @@ namespace AllSpice.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-public class FavoritesController
+public class FavoritesController : ControllerBase
 {
   private readonly Auth0Provider _auth0Provider;
   private readonly FavoritesService _favoritesService;
@@ -16,8 +16,18 @@ public class FavoritesController
 
   [Authorize]
   [HttpPost]
-  public async Task<ActionResult<Favorite>> 
+  public async Task<ActionResult<Favorite>> CreateFavorite([FromBody] Favorite favoriteData)
   {
-    
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      favoriteData.AccountId = userInfo.Id;
+      Favorite favorite = _favoritesService.CreateFavorite(favoriteData);
+      return Ok(favorite);
+    }
+    catch (Exception e)
+    {
+      return BadRequest(e.Message);
+    }
   }
 }
