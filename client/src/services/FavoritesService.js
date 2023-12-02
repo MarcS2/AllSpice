@@ -8,6 +8,17 @@ class FavoritesService {
     AppState.favorites = res.data.map(favorite => new Favorite(favorite))
     logger.log("[FavoritesService] getMyFavorites() AppState.favorites", AppState.favorites)
   }
+
+  async createFavorite(recipeId) {
+    await api.post('api/favorites', { recipeId })
+    this.getMyFavorites(recipeId)
+  }
+
+  async deleteFavorite(favoriteId) {
+    await api.delete(`api/favorites/${favoriteId}`);
+    const favoriteIndex = AppState.favorites.findIndex(favorite => favorite.id == favoriteId)
+    AppState.favorites.splice(favoriteIndex, 1)
+  }
 }
 
 export const favoritesService = new FavoritesService()

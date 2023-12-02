@@ -21,7 +21,7 @@
   <section class="row px-4 mt-4">
     <div v-for="recipe in recipes" :key="recipe.id" class="col-4 my-2">
       <section class="row">
-        <div class="col-10" role="button" data-bs-toggle="modal" data-bs-target="#modalOne" @click="setActive(recipe.id)">
+        <div class="col-10">
           <section class="row rounded recipe-card-size justify-content-between"
             :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover' }">
             <div class="col-5">
@@ -30,14 +30,20 @@
               </div>
             </div>
             <div class="col-5 text-end fs-4">
-              <div v-if="isFavorite(recipe.id)">
-                <i class="mdi mdi-heart"></i>
+              <div v-if="!account.id">
               </div>
-              <div v-else-if="isFavorite(recipe.id) == false">
-                <i class="mdi mdi-heart-outline"></i>
+              <div v-else>
+
+                <span v-if="isFavorite(recipe.id)" role="button" @click="deleteFavorite(recipe.id)">
+                  <i class="mdi mdi-heart"></i>
+                </span>
+                <span v-else-if="isFavorite(recipe.id) == false" role="button" @click="createFavorite(recipe.id)">
+                  <i class="mdi mdi-heart-outline"></i>
+                </span>
               </div>
             </div>
-            <div class="col-12">
+            <div class="col-12" role="button" data-bs-toggle="modal" data-bs-target="#modalOne"
+              @click="setActive(recipe.id)">
               <div>
                 <p class="fs-4 text-light">{{ recipe.title }}</p>
               </div>
@@ -66,6 +72,7 @@ import { recipesService } from '../services/RecipesService'
 import { favoritesService } from '../services/FavoritesService'
 import ModalComponent from "./ModalComponent.vue";
 import Pop from "../utils/Pop";
+import { api } from "../services/AxiosService";
 export default {
   setup() {
     onMounted(() => {
@@ -95,6 +102,25 @@ export default {
       active,
       recipes: computed(() => AppState.recipes),
       favorites: computed(() => AppState.favorites),
+      account: computed(() => AppState.account),
+
+      async createFavorite(recipeId) {
+        try {
+          await favoritesService.createFavorite(recipeId)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
+      async deleteFavorite(recipeId) {
+        try {
+          const foundFavorite = this.favorites.find(favorite => favorite.recipeId == recipeId)
+          const favoriteId = foundFavorite.id
+          const message = await favoritesService.deleteFavorite(favoriteId)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
 
       isFavorite(recipeId) {
         return this.favorites.some(favorite => favorite.recipeId == recipeId)
