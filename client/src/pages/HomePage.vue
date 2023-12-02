@@ -1,34 +1,23 @@
 <template>
   <div class="container-fluid">
-    <section class="row justify-content-center">
-      <div class="col-11 hero-bg shadow rounded">
+    <section class="row justify-content-center mt-3 px-3">
+      <div class="col-12 hero-bg shadow rounded">
 
       </div>
-      <div class="col-10">
+      <div class="col-12">
         <router-view></router-view>
-        <!-- <section class="row justify-content-center">
-          <div class="col-5 mt-3 shadow rounded-pill">
-            <section class="row">
-              <div class="col-4 text-center fs-5">
-                My Recipes
-              </div>
-              <div class="col-4 text-center fs-5 border-bottom border-primary border-3">
-                Home
-              </div>
-              <div class="col-4 text-center fs-5">
-                Favorites
-              </div>
-            </section>
-          </div>
-        </section> -->
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import { onMounted } from "vue";
+
 export default {
   setup() {
+    onMounted(() => {
+    })
     return {
 
     }

@@ -62,6 +62,10 @@ a:hover {
   text-transform: uppercase;
 }
 
+.navbar {
+  position: absolute;
+}
+
 .navbar-nav .router-link-exact-active {
   border-bottom: 2px solid var(--bs-success);
   border-bottom-left-radius: 0;
