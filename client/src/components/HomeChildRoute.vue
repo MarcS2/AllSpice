@@ -101,8 +101,8 @@ export default {
       },
 
       setActive(recipeId) {
-        active.value =
-          logger.log(active)
+        this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
+        logger.log(active)
       }
     }
   },
