@@ -5,7 +5,7 @@
         <div class="col-12 text-light title-bg rounded-top">
           <slot name="title"></slot>
         </div>
-        <div class="col-12 shadow rounded-bottom">
+        <div class="col-12 shadow rounded-bottom ">
           <slot name="instructions"></slot>
         </div>
 

@@ -69,7 +69,7 @@
         <section class="row">
           <div class="col-5">
             <section class="row justify-content-start"
-              :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover', minHeight: '35dvh' }">
+              :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover', minHeight: '60dvh' }">
               <div class="col-1 text-start fs-4 mt-2">
                 <div v-if="!account.id">
                 </div>
@@ -116,18 +116,19 @@
                   <template #instructions>
                     <div v-for="activeIngredient in activeIngredients" :key="activeIngredient.id">
                       <p class="fs-5">
-                        {{ activeIngredient.quantity + " " + activeIngredient.name + "," }}
+                        {{ activeIngredient.quantity + " " + activeIngredient.name }}
                       </p>
                     </div>
-                    <form @submit.prevent="createIngredient(recipe.id)" class="row mt-2">
+                    <form v-if="recipe.creatorId = account.id" @submit.prevent="createIngredient(recipe.id)"
+                      class="row mt-2">
                       <div class="col-6 mb-3 text-start">
                         <label :for="'floatingInput' + recipe.id" class=" fs-6">Name</label>
-                        <input v-model="editable.name" type="email" class="form-control "
-                          :id="'floatingInput' + recipe.id" placeholder="Ingredient name">
+                        <input v-model="editable.name" type="string" class="form-control "
+                          :id="'floatingInput' + recipe.id" placeholder="Ingredient">
                       </div>
                       <div class="col-6 text-start">
                         <label :for="'floatingPassword' + recipe.id" class="me-5 fs-6">Quantity</label>
-                        <input v-model="editable.quantity" type="password" class="form-control"
+                        <input v-model="editable.quantity" type="string" class="form-control"
                           :id="'floatingPassword' + recipe.id" placeholder="ex. 1 1/2 cups">
                       </div>
                       <div class="col-12">
@@ -152,10 +153,12 @@ import { computed, reactive, onMounted, watch, ref } from 'vue';
 import { logger } from "../utils/Logger";
 import { recipesService } from '../services/RecipesService'
 import { favoritesService } from '../services/FavoritesService'
+import { ingredientsService } from '../services/IngredientsService'
 import ModalComponent from "./ModalComponent.vue";
 import Pop from "../utils/Pop";
 import { api } from "../services/AxiosService";
 import InstructionComponent from "./InstructionComponent.vue";
+import { Modal } from "bootstrap";
 export default {
   setup() {
     onMounted(() => {
@@ -193,7 +196,11 @@ export default {
 
       async createIngredient(recipeId) {
         try {
-
+          editable.value.recipeId = recipeId
+          const ingredientData = editable.value
+          await ingredientsService.createIngredient(ingredientData)
+          editable.value = {}
+          Modal.getOrCreateInstance(`#modal_${recipeId}`).hide()
         } catch (error) {
           Pop.error(error)
         }
