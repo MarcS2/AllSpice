@@ -26,26 +26,32 @@
             :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover' }">
             <div class="col-5">
               <div class="text-light fs-5">
-                <p>{{ recipe.category }}</p>
+                <span class="d-flex ">
+                  <p class="blur-bg rounded p-1">{{ recipe.category }}</p>
+                </span>
               </div>
             </div>
             <div class="col-5 text-end fs-4">
               <div v-if="!account.id">
               </div>
-              <div v-else>
+              <div v-else class="mt-2">
 
-                <span v-if="isFavorite(recipe.id)" role="button" @click="deleteFavorite(recipe.id)">
+                <span v-if="isFavorite(recipe.id)" class=" blur-bg rounded p-2 px-3" role="button"
+                  @click="deleteFavorite(recipe.id)">
                   <i class="mdi mdi-heart"></i>
                 </span>
-                <span v-else-if="isFavorite(recipe.id) == false" role="button" @click="createFavorite(recipe.id)">
+                <span v-else-if="isFavorite(recipe.id) == false" class="blur-bg rounded p-2 px-3" role="button"
+                  @click="createFavorite(recipe.id)">
                   <i class="mdi mdi-heart-outline"></i>
                 </span>
               </div>
             </div>
-            <div class="col-12" role="button" data-bs-toggle="modal" data-bs-target="#modalOne"
+            <div class="col-12" role="button" data-bs-toggle="modal" :data-bs-target="getModalId(recipe.id)"
               @click="setActive(recipe.id)">
               <div>
-                <p class="fs-4 text-light">{{ recipe.title }}</p>
+                <span class="d-flex">
+                  <p class="fs-4 text-light blur-bg rounded">{{ recipe.title }}</p>
+                </span>
               </div>
             </div>
           </section>
@@ -53,12 +59,88 @@
       </section>
     </div>
   </section>
-  <ModalComponent :modalId="'modalOne'" :modalSize="'modal-xl'">
+  <ModalComponent v-for="recipe in  recipes " :key="recipe.id" :modalId="'modal_' + recipe.id.toString()"
+    :modalSize="'modal-xl'">
     <template #modalTitle>
       <b>Modal One</b>
     </template>
     <template #modalBody>
-      {{ active.value }}
+      <div class="container-fluid">
+        <section class="row">
+          <div class="col-5">
+            <section class="row justify-content-start"
+              :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover', minHeight: '35dvh' }">
+              <div class="col-1 text-start fs-4 mt-2">
+                <div v-if="!account.id">
+                </div>
+                <div v-else>
+
+                  <span v-if="isFavorite(recipe.id)" class="blur-bg rounded p-2 px-3 " role="button"
+                    @click="deleteFavorite(recipe.id)">
+                    <i class="mdi mdi-heart"></i>
+                  </span>
+                  <span v-else-if="isFavorite(recipe.id) == false" class="blur-bg rounded p-2 px-3" role="button"
+                    @click="createFavorite(recipe.id)">
+                    <i class="mdi mdi-heart-outline"></i>
+                  </span>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="col-7">
+            <section class="row">
+              <div class="col-12 text-end mt-2">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="col-12">
+                <p class=" fs-3 d-inline me-3">
+                  {{ recipe.title }}
+                </p>
+                <p class="d-inline blur-bg p-1 rounded-pill">{{ recipe.category }}</p>
+              </div>
+              <div class="col-6">
+                <InstructionComponent>
+                  <template #title>
+                    <p class="mb-0 text-light">Instructions</p>
+                  </template>
+                  <template #instructions>
+                    <p class="text-start">{{ recipe.instructions }}</p>
+                  </template>
+                </InstructionComponent>
+              </div>
+              <div class="col-6">
+                <InstructionComponent>
+                  <template #title>
+                    <p class="mb-0 text-light">Ingredients</p>
+                  </template>
+                  <template #instructions>
+                    <div v-for="activeIngredient in activeIngredients" :key="activeIngredient.id">
+                      <p class="fs-5">
+                        {{ activeIngredient.quantity + " " + activeIngredient.name + "," }}
+                      </p>
+                    </div>
+                    <form @submit.prevent="createIngredient(recipe.id)" class="row mt-2">
+                      <div class="col-6 mb-3 text-start">
+                        <label for="floatingInput" class=" fs-6">Name</label>
+                        <input v-model="editable.name" type="email" class="form-control " id="floatingInput"
+                          placeholder="Ingredient name">
+                      </div>
+                      <div class="col-6 text-start">
+                        <label for="floatingPassword" class="me-5 fs-6">Quantity</label>
+                        <input v-model="editable.quantity" type="password" class="form-control" id="floatingPassword"
+                          placeholder="ex. 1 1/2 cups">
+                      </div>
+                      <div class="col-12">
+                        <button class="btn btn-outline-primary mb-2">Add Ingredient</button>
+                      </div>
+                    </form>
+                  </template>
+                </InstructionComponent>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
     </template>
   </ModalComponent>
 </template>
@@ -73,6 +155,7 @@ import { favoritesService } from '../services/FavoritesService'
 import ModalComponent from "./ModalComponent.vue";
 import Pop from "../utils/Pop";
 import { api } from "../services/AxiosService";
+import InstructionComponent from "./InstructionComponent.vue";
 export default {
   setup() {
     onMounted(() => {
@@ -82,7 +165,8 @@ export default {
       getMyFavorites()
     })
     let active = ref({});
-
+    let isActive = ref(false);
+    let editable = ref({});
     async function getRecipes() {
       try {
         await recipesService.getRecipes();
@@ -99,10 +183,21 @@ export default {
       }
     }
     return {
+      editable,
       active,
       recipes: computed(() => AppState.recipes),
       favorites: computed(() => AppState.favorites),
       account: computed(() => AppState.account),
+      recipeIdString: computed(() => active.value.id.toString()),
+      activeIngredients: computed(() => AppState.activeIngredients),
+
+      async createIngredient(recipeId) {
+        try {
+
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
 
       async createFavorite(recipeId) {
         try {
@@ -122,17 +217,30 @@ export default {
         }
       },
 
+      async getIngredientsByRecipeId(recipeId) {
+        try {
+          await recipesService.getIngredientsByRecipeId(recipeId)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
+
       isFavorite(recipeId) {
         return this.favorites.some(favorite => favorite.recipeId == recipeId)
       },
 
       setActive(recipeId) {
+        this.getIngredientsByRecipeId(recipeId)
         this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
-        logger.log(active)
+      },
+
+      getModalId(recipeId) {
+        return `#modal_${recipeId}`
       }
     }
   },
-  components: { ModalComponent }
+  components: { ModalComponent, InstructionComponent }
 };
 </script>
 
@@ -140,5 +248,10 @@ export default {
 <style lang="scss" scoped>
 .recipe-card-size {
   min-height: 25dvh;
+}
+
+.blur-bg {
+  background: #8c8b8a4e;
+  backdrop-filter: blur(5px);
 }
 </style>
