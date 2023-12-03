@@ -121,14 +121,14 @@
                     </div>
                     <form @submit.prevent="createIngredient(recipe.id)" class="row mt-2">
                       <div class="col-6 mb-3 text-start">
-                        <label for="floatingInput" class=" fs-6">Name</label>
-                        <input v-model="editable.name" type="email" class="form-control " id="floatingInput"
-                          placeholder="Ingredient name">
+                        <label :for="'floatingInput' + recipe.id" class=" fs-6">Name</label>
+                        <input v-model="editable.name" type="email" class="form-control "
+                          :id="'floatingInput' + recipe.id" placeholder="Ingredient name">
                       </div>
                       <div class="col-6 text-start">
-                        <label for="floatingPassword" class="me-5 fs-6">Quantity</label>
-                        <input v-model="editable.quantity" type="password" class="form-control" id="floatingPassword"
-                          placeholder="ex. 1 1/2 cups">
+                        <label :for="'floatingPassword' + recipe.id" class="me-5 fs-6">Quantity</label>
+                        <input v-model="editable.quantity" type="password" class="form-control"
+                          :id="'floatingPassword' + recipe.id" placeholder="ex. 1 1/2 cups">
                       </div>
                       <div class="col-12">
                         <button class="btn btn-outline-primary mb-2">Add Ingredient</button>
