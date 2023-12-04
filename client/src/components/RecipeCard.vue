@@ -13,7 +13,7 @@
           </div>
         </div>
         <div class="col-5 text-end fs-4">
-          <div v-if="!account.id">
+          <div v-if="favorites == null">
           </div>
           <div v-else class="mt-2">
 
@@ -46,6 +46,7 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import { Recipe } from "../models/Recipe";
 import { recipesService } from "../services/RecipesService";
+import { favoritesService } from "../services/FavoritesService";
 import Pop from "../utils/Pop";
 export default {
   props: {
@@ -53,11 +54,29 @@ export default {
   },
   setup() {
     return {
-      account: computed(() => AppState.account),
+      account: computed(() => AppState.account.id),
+      favorites: computed(() => AppState.favorites),
+
+      async createFavorite(recipeId) {
+        try {
+          await favoritesService.createFavorite(recipeId)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
+      async deleteFavorite(recipeId) {
+        try {
+          const foundFavorite = this.favorites.find(favorite => favorite.recipeId == recipeId)
+          const favoriteId = foundFavorite.id
+          await favoritesService.deleteFavorite(favoriteId)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
 
       async getIngredientsByRecipeId(recipeId) {
         try {
-          debugger
           await recipesService.getIngredientsByRecipeId(recipeId)
         } catch (error) {
           Pop.error(error)

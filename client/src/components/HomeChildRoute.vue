@@ -74,7 +74,7 @@
               <div class="col-1 text-start fs-4 mt-2">
                 <div v-if="!account.id">
                 </div>
-                <div v-else>
+                <div v-else-if="isActive">
 
                   <span v-if="isFavorite(recipe.id)" class="blur-bg rounded p-2 px-3 " role="button"
                     @click="deleteFavorite(recipe.id)">
@@ -183,12 +183,14 @@ export default {
     async function getMyFavorites() {
       try {
         await favoritesService.getMyFavorites()
+        isActive.value = true
       } catch (error) {
         Pop.error(error)
       }
     }
     return {
       editable,
+      isActive,
       active,
       recipes: computed(() => AppState.recipes),
       favorites: computed(() => AppState.favorites),
@@ -235,18 +237,18 @@ export default {
       // },
 
 
-      // isFavorite(recipeId) {
-      //   return this.favorites.some(favorite => favorite.recipeId == recipeId)
-      // },
+      isFavorite(recipeId) {
+        return this.favorites.some(favorite => favorite.recipeId == recipeId)
+      },
 
-      // setActive(recipeId) {
-      //   this.getIngredientsByRecipeId(recipeId)
-      //   this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
-      // },
+      setActive(recipeId) {
+        this.getIngredientsByRecipeId(recipeId)
+        this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
+      },
 
-      // getModalId(recipeId) {
-      //   return `#modal_${recipeId}`
-      // }
+      getModalId(recipeId) {
+        return `#modal_${recipeId}`
+      }
     }
   },
   components: { ModalComponent, InstructionComponent, RecipeCard }
@@ -259,8 +261,8 @@ export default {
 //   min-height: 25dvh;
 // }
 
-// .blur-bg {
-//   background: #8c8b8a4e;
-//   backdrop-filter: blur(5px);
-// }
+.blur-bg {
+  background: #8c8b8a4e;
+  backdrop-filter: blur(5px);
+}
 </style>
