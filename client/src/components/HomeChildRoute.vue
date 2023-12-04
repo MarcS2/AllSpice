@@ -2,15 +2,16 @@
   <section class="row justify-content-center">
     <div class="col-6 mt-3 shadow rounded-pill">
       <section class="row">
-        <div class="col-4 text-center fs-5">
+        <div class="col-4 text-center fs-5" v-if="account.id">
           <router-link :to="{ name: 'Recipe' }" class="text-dark">
             My Recipes
           </router-link>
         </div>
-        <div class="col-4 text-center fs-5 border-bottom border-primary border-3">
+        <div class="col-4 text-center fs-5 "
+          :class="account.id ? 'border-bottom border-primary border-3' : 'col-12 mb-1'">
           Home
         </div>
-        <div class="col-4 text-center fs-5">
+        <div class="col-4 text-center fs-5" v-if="account.id">
           <router-link :to="{ name: 'Favorite' }" class="text-dark">
             Favorites
           </router-link>
@@ -21,46 +22,8 @@
   <section class="row px-4 mt-4">
     <div v-for="recipe in recipes" :key="recipe.id" class="col-4 my-2">
       <RecipeCard :recipe="recipe" />
-      <!-- <section class="row">
-        <div class="col-10">
-          <section class="row rounded recipe-card-size justify-content-between"
-            :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover' }">
-            <div class="col-5">
-              <div class="text-light fs-5">
-                <span class="d-flex ">
-                  <p class="blur-bg rounded p-1">{{ recipe.category }}</p>
-                </span>
-              </div>
-            </div>
-            <div class="col-5 text-end fs-4">
-              <div v-if="!account.id">
-              </div>
-              <div v-else class="mt-2">
-
-                <span v-if="isFavorite(recipe.id)" class=" blur-bg rounded p-2 px-3" role="button"
-                  @click="deleteFavorite(recipe.id)">
-                  <i class="mdi mdi-heart"></i>
-                </span>
-                <span v-else-if="isFavorite(recipe.id) == false" class="blur-bg rounded p-2 px-3" role="button"
-                  @click="createFavorite(recipe.id)">
-                  <i class="mdi mdi-heart-outline"></i>
-                </span>
-              </div>
-            </div>
-            <div class="col-12" role="button" data-bs-toggle="modal" :data-bs-target="getModalId(recipe.id)"
-              @click="setActive(recipe.id)">
-              <div>
-                <span class="d-flex">
-                  <p class="fs-4 text-light blur-bg rounded">{{ recipe.title }}</p>
-                </span>
-              </div>
-            </div>
-          </section>
-        </div>
-      </section> -->
     </div>
   </section>
-  <!-- v-for="recipe in  recipes " :key="recipe.id" -->
 
   <ModalComponent :modalId="'modal_One'" :modalSize="'modal-xl'">
 
@@ -193,7 +156,7 @@ export default {
     return {
       editable,
       isActive,
-      active,
+      // active,
       recipes: computed(() => AppState.recipes),
       favorites: computed(() => AppState.favorites),
       account: computed(() => AppState.account),
@@ -231,26 +194,12 @@ export default {
         }
       },
 
-      // async getIngredientsByRecipeId(recipeId) {
-      //   try {
-      //     await recipesService.getIngredientsByRecipeId(recipeId)
-      //   } catch (error) {
-      //     Pop.error(error)
-      //   }
-      // },
-
-
       isFavorite(recipeId) {
-        return this.favorites.some(favorite => favorite.recipeId == recipeId)
+        return this.favorites.some(favorite => favorite.id == recipeId)
       },
 
       setActive(recipeId) {
         this.getIngredientsByRecipeId(recipeId)
-        this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
-      },
-
-      getModalId(recipeId) {
-        return `#modal_${recipeId}`
       }
     }
   },

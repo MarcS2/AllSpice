@@ -67,9 +67,9 @@ export default {
 
       async deleteFavorite(recipeId) {
         try {
-          const foundFavorite = this.favorites.find(favorite => favorite.recipeId == recipeId)
-          const favoriteId = foundFavorite.id
-          await favoritesService.deleteFavorite(favoriteId)
+          const foundFavorite = this.favorites.find(favorite => favorite.id == recipeId)
+          const foundFavoriteId = foundFavorite.favoriteId
+          await favoritesService.deleteFavorite(foundFavoriteId)
         } catch (error) {
           Pop.error(error)
         }
@@ -92,7 +92,7 @@ export default {
       },
 
       isFavorite(recipeId) {
-        return this.favorites.some(favorite => favorite.recipeId == recipeId)
+        return this.favorites.some(favorite => favorite.id == recipeId)
       },
 
       setActive(recipeId) {
