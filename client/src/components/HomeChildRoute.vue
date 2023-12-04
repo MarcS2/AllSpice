@@ -60,28 +60,30 @@
       </section> -->
     </div>
   </section>
-  <ModalComponent v-for="recipe in  recipes " :key="recipe.id" :modalId="'modal_' + recipe.id.toString()"
-    :modalSize="'modal-xl'">
-    <template #modalTitle>
+  <!-- v-for="recipe in  recipes " :key="recipe.id" -->
+
+  <ModalComponent :modalId="'modal_One'" :modalSize="'modal-xl'">
+
+    <template #modalTitle v-if="activeRecipe != null">
       <b>Modal One</b>
     </template>
-    <template #modalBody>
+    <template #modalBody v-if="activeRecipe != null">
       <div class="container-fluid">
         <section class="row">
           <div class="col-5">
             <section class="row justify-content-start"
-              :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover', minHeight: '60dvh' }">
+              :style="{ backgroundImage: `url('${activeRecipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover', minHeight: '60dvh' }">
               <div class="col-1 text-start fs-4 mt-2">
                 <div v-if="!account.id">
                 </div>
                 <div v-else-if="isActive">
 
-                  <span v-if="isFavorite(recipe.id)" class="blur-bg rounded p-2 px-3 " role="button"
-                    @click="deleteFavorite(recipe.id)">
+                  <span v-if="isFavorite(activeRecipe.id)" class="blur-bg rounded p-2 px-3 " role="button"
+                    @click="deleteFavorite(activeRecipe.id)">
                     <i class="mdi mdi-heart"></i>
                   </span>
-                  <span v-else-if="isFavorite(recipe.id) == false" class="blur-bg rounded p-2 px-3" role="button"
-                    @click="createFavorite(recipe.id)">
+                  <span v-else-if="isFavorite(activeRecipe.id) == false" class="blur-bg rounded p-2 px-3" role="button"
+                    @click="createFavorite(activeRecipe.id)">
                     <i class="mdi mdi-heart-outline"></i>
                   </span>
                 </div>
@@ -95,9 +97,9 @@
               </div>
               <div class="col-12">
                 <p class=" fs-3 d-inline me-3">
-                  {{ recipe.title }}
+                  {{ activeRecipe.title }}
                 </p>
-                <p class="d-inline blur-bg p-1 rounded-pill">{{ recipe.category }}</p>
+                <p class="d-inline blur-bg p-1 rounded-pill">{{ activeRecipe.category }}</p>
               </div>
               <div class="col-6">
                 <InstructionComponent>
@@ -105,7 +107,7 @@
                     <p class="mb-0 text-light">Instructions</p>
                   </template>
                   <template #instructions>
-                    <p class="text-start">{{ recipe.instructions }}</p>
+                    <p class="text-start">{{ activeRecipe.instructions }}</p>
                   </template>
                 </InstructionComponent>
               </div>
@@ -120,17 +122,17 @@
                         {{ activeIngredient.quantity + " " + activeIngredient.name }}
                       </p>
                     </div>
-                    <form v-if="recipe.creatorId = account.id" @submit.prevent="createIngredient(recipe.id)"
+                    <form v-if="activeRecipe.creatorId = account.id" @submit.prevent="createIngredient(activeRecipe.id)"
                       class="row mt-2">
                       <div class="col-6 mb-3 text-start">
-                        <label :for="'floatingInput' + recipe.id" class=" fs-6">Name</label>
+                        <label :for="'floatingInput' + activeRecipe.id" class=" fs-6">Name</label>
                         <input v-model="editable.name" type="string" class="form-control "
-                          :id="'floatingInput' + recipe.id" placeholder="Ingredient">
+                          :id="'floatingInput' + activeRecipe.id" placeholder="Ingredient">
                       </div>
                       <div class="col-6 text-start">
-                        <label :for="'floatingPassword' + recipe.id" class="me-5 fs-6">Quantity</label>
+                        <label :for="'floatingPassword' + activeRecipe.id" class="me-5 fs-6">Quantity</label>
                         <input v-model="editable.quantity" type="string" class="form-control"
-                          :id="'floatingPassword' + recipe.id" placeholder="ex. 1 1/2 cups">
+                          :id="'floatingPassword' + activeRecipe.id" placeholder="ex. 1 1/2 cups">
                       </div>
                       <div class="col-12">
                         <button class="btn btn-outline-primary mb-2">Add Ingredient</button>
@@ -197,6 +199,7 @@ export default {
       account: computed(() => AppState.account),
       // recipeIdString: computed(() => active.value.id.toString()),
       activeIngredients: computed(() => AppState.activeIngredients),
+      activeRecipe: computed(() => AppState.activeRecipe),
 
       async createIngredient(recipeId) {
         try {

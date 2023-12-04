@@ -27,8 +27,8 @@
             </span>
           </div>
         </div>
-        <div class="col-12" role="button" data-bs-toggle="modal" :data-bs-target="getModalId(recipe.id)"
-          @click="getIngredientsByRecipeId(recipe.id)">
+        <div class="col-12" role="button" data-bs-toggle="modal" :data-bs-target="'#modal_One'"
+          @click="setActive(recipe.id)">
           <div>
             <span class="d-flex">
               <p class="fs-4 text-light blur-bg rounded">{{ recipe.title }}</p>
@@ -83,13 +83,22 @@ export default {
         }
       },
 
+      async setActiveRecipe(recipeId) {
+        try {
+          recipesService.setActiveRecipe(recipeId)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
       isFavorite(recipeId) {
         return this.favorites.some(favorite => favorite.recipeId == recipeId)
       },
 
       setActive(recipeId) {
+        this.setActiveRecipe(recipeId)
         this.getIngredientsByRecipeId(recipeId)
-        this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
+        // this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
       },
 
       getModalId(recipeId) {

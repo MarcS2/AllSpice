@@ -19,7 +19,16 @@ class RecipesService {
     logger.log('[RecipesService] getIngredientsByRecipeId() AppState.activeIngredients', AppState.activeIngredients)
   }
 
+  async getRecipeById(recipeId) {
+    const res = await api.get(`api/recipes/${recipeId}`)
+    return res.data
+  }
 
+  async setActiveRecipe(recipeId) {
+    const recipe = await this.getRecipeById(recipeId)
+    AppState.activeRecipe = new Recipe(recipe)
+    logger.log('[RecipesService] setActiveRecipe() AppState.activeRecipe', AppState.activeRecipe)
+  }
 }
 
 
