@@ -20,7 +20,8 @@
   </section>
   <section class="row px-4 mt-4">
     <div v-for="recipe in recipes" :key="recipe.id" class="col-4 my-2">
-      <section class="row">
+      <RecipeCard :recipe="recipe" />
+      <!-- <section class="row">
         <div class="col-10">
           <section class="row rounded recipe-card-size justify-content-between"
             :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover' }">
@@ -56,7 +57,7 @@
             </div>
           </section>
         </div>
-      </section>
+      </section> -->
     </div>
   </section>
   <ModalComponent v-for="recipe in  recipes " :key="recipe.id" :modalId="'modal_' + recipe.id.toString()"
@@ -159,6 +160,7 @@ import Pop from "../utils/Pop";
 import { api } from "../services/AxiosService";
 import InstructionComponent from "./InstructionComponent.vue";
 import { Modal } from "bootstrap";
+import RecipeCard from "./RecipeCard.vue";
 export default {
   setup() {
     onMounted(() => {
@@ -191,7 +193,7 @@ export default {
       recipes: computed(() => AppState.recipes),
       favorites: computed(() => AppState.favorites),
       account: computed(() => AppState.account),
-      recipeIdString: computed(() => active.value.id.toString()),
+      // recipeIdString: computed(() => active.value.id.toString()),
       activeIngredients: computed(() => AppState.activeIngredients),
 
       async createIngredient(recipeId) {
@@ -224,41 +226,41 @@ export default {
         }
       },
 
-      async getIngredientsByRecipeId(recipeId) {
-        try {
-          await recipesService.getIngredientsByRecipeId(recipeId)
-        } catch (error) {
-          Pop.error(error)
-        }
-      },
+      // async getIngredientsByRecipeId(recipeId) {
+      //   try {
+      //     await recipesService.getIngredientsByRecipeId(recipeId)
+      //   } catch (error) {
+      //     Pop.error(error)
+      //   }
+      // },
 
 
-      isFavorite(recipeId) {
-        return this.favorites.some(favorite => favorite.recipeId == recipeId)
-      },
+      // isFavorite(recipeId) {
+      //   return this.favorites.some(favorite => favorite.recipeId == recipeId)
+      // },
 
-      setActive(recipeId) {
-        this.getIngredientsByRecipeId(recipeId)
-        this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
-      },
+      // setActive(recipeId) {
+      //   this.getIngredientsByRecipeId(recipeId)
+      //   this.active.value = this.recipes.find(recipe => recipe.id == recipeId)
+      // },
 
-      getModalId(recipeId) {
-        return `#modal_${recipeId}`
-      }
+      // getModalId(recipeId) {
+      //   return `#modal_${recipeId}`
+      // }
     }
   },
-  components: { ModalComponent, InstructionComponent }
+  components: { ModalComponent, InstructionComponent, RecipeCard }
 };
-</script>
+</script>s
 
 
 <style lang="scss" scoped>
-.recipe-card-size {
-  min-height: 25dvh;
-}
+// .recipe-card-size {
+//   min-height: 25dvh;
+// }
 
-.blur-bg {
-  background: #8c8b8a4e;
-  backdrop-filter: blur(5px);
-}
+// .blur-bg {
+//   background: #8c8b8a4e;
+//   backdrop-filter: blur(5px);
+// }
 </style>
