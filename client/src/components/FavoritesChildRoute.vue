@@ -19,8 +19,8 @@
     </div>
   </section>
   <section class="row px-4 mt-4">
-    <div v-for="recipe in recipes" :key="recipe.id" v-if="isFavorite(recipe.id)" class="col-4 my-2">
-      <RecipeCard :recipe="recipe" />
+    <div v-for="favorite in favorites" :key="favorite.favoriteId" class="col-4 my-2">
+      <RecipeCard :recipe="favorite" />
     </div>
   </section>
   <ModalComponent :modalId="'modal_One'" :modalSize="'modal-xl'">
@@ -121,6 +121,7 @@ import ModalComponent from "./ModalComponent.vue";
 import InstructionComponent from "./InstructionComponent.vue";
 import { logger } from "../utils/Logger";
 import { useRouter } from "vue-router";
+import { Recipe } from "../models/Recipe";
 export default {
   setup() {
     let isActive = ref(false);

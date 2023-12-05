@@ -48,9 +48,10 @@ import { Recipe } from "../models/Recipe";
 import { recipesService } from "../services/RecipesService";
 import { favoritesService } from "../services/FavoritesService";
 import Pop from "../utils/Pop";
+import { Favorite } from "../models/Favorite";
 export default {
   props: {
-    recipe: { type: Recipe, required: true }
+    recipe: { type: Object, required: true }
   },
   setup() {
     return {
