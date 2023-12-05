@@ -19,10 +19,8 @@
     </div>
   </section>
   <section class="row px-4 mt-4">
-    <div v-for="recipe in recipes" :key="recipe.id" class="col-4 my-2">
-      <div v-if="isFavorite(recipe.id)">
-        <RecipeCard :recipe="recipe" />
-      </div>
+    <div v-for="recipe in recipes" :key="recipe.id" v-if="isFavorite(recipe.id)" class="col-4 my-2">
+      <RecipeCard :recipe="recipe" />
     </div>
   </section>
   <ModalComponent :modalId="'modal_One'" :modalSize="'modal-xl'">
@@ -130,14 +128,16 @@ export default {
     let favoriteRecipes = []
     const router = useRouter()
     const account = computed(() => AppState.account)
+    const favorites = computed(() => AppState.favorites)
     watch(() => AppState.favorites, () => isActive.value = true)
 
     return {
       account,
+      favorites,
       activeRecipe: computed(() => AppState.activeRecipe),
       activeIngredient: computed(() => AppState.activeIngredients),
-      favorites: computed(() => AppState.favorites),
       recipes: computed(() => AppState.recipes),
+
       async createIngredient(recipeId) {
         try {
           editable,
