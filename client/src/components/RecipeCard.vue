@@ -1,7 +1,7 @@
 
 
 <template>
-  <section class="row">
+  <section class="row justify-content-center">
     <div class="col-10">
       <section class="row rounded recipe-card-size justify-content-between"
         :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover' }">
