@@ -1,10 +1,10 @@
 <template>
   <section class="row justify-content-center">
-    <div class="col-6 mt-3 shadow rounded-pill">
+    <div class="col-12 col-md-6 mt-3 shadow rounded-pill">
       <section class="row">
         <div class="col-4 text-center fs-5">
           <router-link :to="{ name: 'Recipe' }" class="text-dark">
-            My Recipes
+            MyRecipes
           </router-link>
         </div>
         <div class="col-4 text-center fs-5">
@@ -121,15 +121,19 @@ import {
 import RecipeCard from "./RecipeCard.vue";
 import ModalComponent from "./ModalComponent.vue";
 import InstructionComponent from "./InstructionComponent.vue";
+import { logger } from "../utils/Logger";
+import { useRouter } from "vue-router";
 export default {
   setup() {
-    watch(() => AppState.favorites, () => isActive.value = true)
     let isActive = ref(false);
     let editable = ref({});
     let favoriteRecipes = []
+    const router = useRouter()
+    const account = computed(() => AppState.account)
+    watch(() => AppState.favorites, () => isActive.value = true)
 
     return {
-      account: computed(() => AppState.account),
+      account,
       activeRecipe: computed(() => AppState.activeRecipe),
       activeIngredient: computed(() => AppState.activeIngredients),
       favorites: computed(() => AppState.favorites),

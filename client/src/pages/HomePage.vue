@@ -12,14 +12,28 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { logger } from "../utils/Logger";
+import { ref } from "vue";
+import { computeStyles } from "@popperjs/core";
+import { AppState } from "../AppState";
 
 export default {
   setup() {
+    const account = computed(() => AppState.account)
+    const route = useRoute()
+    const router = useRouter()
     onMounted(() => {
+      checkRoute()
     })
-    return {
 
+    function checkRoute() {
+      if (route.fullPath == '/favorite' && !account.id) {
+        router.push('/')
+      }
+    }
+    return {
     }
   }
 }
