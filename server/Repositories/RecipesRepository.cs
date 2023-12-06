@@ -3,6 +3,7 @@
 
 
 
+
 namespace AllSpice.Repositories;
 
 public class RecipesRepository
@@ -54,6 +55,26 @@ public class RecipesRepository
     }).ToList();
     return recipes;
   }
+  internal List<Recipe> GetRecipesByQuery(string category)
+  {
+
+    category = $"%{category}%";
+    string sql = @"
+      SELECT
+      rec.*,
+      acc.*
+      FROM recipes rec
+      JOIN accounts acc ON rec.creatorId = acc.id
+      WHERE rec.category LIKE @category;";
+
+    List<Recipe> recipes = _db.Query<Recipe, Account, Recipe>(sql, (recipe, account) =>
+    {
+      recipe.Creator = account;
+      return recipe;
+    }, new { category }).ToList();
+
+    return recipes;
+  }
 
   internal Recipe GetRecipeById(int recipeId)
   {
@@ -95,4 +116,5 @@ public class RecipesRepository
     _db.Execute(sql, new { recipeId });
     return "Your recipe has been deleted.";
   }
+
 }

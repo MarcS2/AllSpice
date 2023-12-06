@@ -19,10 +19,15 @@ public class RecipesService
     return recipe;
   }
 
-  internal List<Recipe> GetRecipes()
+  internal List<Recipe> GetRecipes(string category)
   {
-    List<Recipe> recipes = _repository.GetRecipes();
-    return recipes;
+    if (category == null)
+    {
+      List<Recipe> recipes = _repository.GetRecipes();
+      return recipes;
+    }
+    List<Recipe> queriedRecipes = _repository.GetRecipesByQuery(category);
+    return queriedRecipes;
   }
 
   internal Recipe GetRecipeById(int recipeId)

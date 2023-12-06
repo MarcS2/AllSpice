@@ -25,7 +25,8 @@ class RecipesService {
   }
 
   async getRecipesByQuery(query) {
-    const res = await api.get()
+    const res = await api.get(`api/recipes/?category=${query}`)
+    AppState.recipes = res.data.map(recipe => new Recipe(recipe))
   }
 
   getMyRecipes(creatorId) {
