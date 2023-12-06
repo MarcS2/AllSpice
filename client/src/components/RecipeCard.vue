@@ -27,12 +27,15 @@
             </span>
           </div>
         </div>
-        <div class="col-12" role="button" data-bs-toggle="modal" :data-bs-target="'#modal_One'"
-          @click="setActive(recipe.id)">
-          <div>
+        <div class="col-12">
+          <div role="button" data-bs-toggle="modal" :data-bs-target="'#modal_One'" @click="setActive(recipe.id)">
             <span class="d-flex">
               <p class="fs-4 text-light blur-bg rounded">{{ recipe.title }}</p>
             </span>
+          </div>
+          <div v-if="account == recipe.creatorId" class="text-end">
+            <button @click="deleteRecipe(recipe.id)" class="btn btn-outline-danger"><i
+                class="mdi mdi-delete"></i></button>
           </div>
         </div>
       </section>
@@ -87,6 +90,18 @@ export default {
       async setActiveRecipe(recipeId) {
         try {
           recipesService.setActiveRecipe(recipeId)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
+      async deleteRecipe(recipeId) {
+        try {
+          const wantsTo = await Pop.confirm('Would you like to delete this recipe?')
+          if (!wantsTo) {
+            return
+          }
+          recipesService.deleteRecipe(recipeId)
         } catch (error) {
           Pop.error(error)
         }

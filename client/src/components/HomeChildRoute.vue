@@ -35,7 +35,7 @@
         <section class="row">
           <div class="col-5">
             <section class="row justify-content-start"
-              :style="{ backgroundImage: `url('${activeRecipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover', minHeight: '60dvh' }">
+              :style="{ backgroundImage: `url('${activeRecipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover', minHeight: '95dvh' }">
               <div class="col-1 text-start fs-4 mt-2">
                 <div v-if="!account.id">
                 </div>
@@ -85,7 +85,7 @@
                         {{ activeIngredient.quantity + " " + activeIngredient.name }}
                       </p>
                     </div>
-                    <form v-if="activeRecipe.creatorId = account.id" @submit.prevent="createIngredient(activeRecipe.id)"
+                    <form v-if="activeRecipe.creatorId == account.id" @submit.prevent="createIngredient(activeRecipe.id)"
                       class="row mt-2">
                       <div class="col-6 mb-3 text-start">
                         <label :for="'floatingInput' + activeRecipe.id" class=" fs-6">Name</label>
@@ -122,7 +122,6 @@ import { favoritesService } from '../services/FavoritesService'
 import { ingredientsService } from '../services/IngredientsService'
 import ModalComponent from "./ModalComponent.vue";
 import Pop from "../utils/Pop";
-import { api } from "../services/AxiosService";
 import InstructionComponent from "./InstructionComponent.vue";
 import { Modal } from "bootstrap";
 import RecipeCard from "./RecipeCard.vue";
@@ -170,7 +169,7 @@ export default {
           const ingredientData = editable.value
           await ingredientsService.createIngredient(ingredientData)
           editable.value = {}
-          Modal.getOrCreateInstance(`#modal_${recipeId}`).hide()
+          Modal.getOrCreateInstance(`#modal_One`).hide()
         } catch (error) {
           Pop.error(error)
         }
@@ -200,7 +199,8 @@ export default {
 
       setActive(recipeId) {
         this.getIngredientsByRecipeId(recipeId)
-      }
+      },
+
     }
   },
   components: { ModalComponent, InstructionComponent, RecipeCard }
