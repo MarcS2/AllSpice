@@ -1,21 +1,22 @@
 
 
 <template>
-  <section class="row justify-content-center">
+  <section class="row justify-content-center ">
     <div class="col-10">
-      <section class="row rounded recipe-card-size justify-content-between"
+      <section
+        class="row rounded recipe-card-size justify-content-between shadow border border-dark align-content-between"
         :style="{ backgroundImage: `url('${recipe.img}')`, backgroundPosition: 'center', backgroundSize: 'cover' }">
         <div class="col-5">
           <div class="text-light fs-5">
-            <span class="d-flex ">
-              <p class="blur-bg rounded p-1">{{ recipe.category }}</p>
+            <span class="d-flex mt-2">
+              <p class="blur-bg rounded p-2">{{ recipe.category }}</p>
             </span>
           </div>
         </div>
         <div class="col-5 text-end fs-4">
           <div v-if="favorites == null">
           </div>
-          <div v-else class="mt-2">
+          <div v-else class="mt-3">
 
             <span v-if="isFavorite(recipe.id)" class=" blur-bg rounded p-2 px-3" role="button"
               @click="deleteFavorite(recipe.id)">
@@ -27,16 +28,16 @@
             </span>
           </div>
         </div>
-        <div class="col-12">
+        <div class="col-9">
           <div role="button" data-bs-toggle="modal" :data-bs-target="'#modal_One'" @click="setActive(recipe.id)">
             <span class="d-flex">
-              <p class="fs-4 text-light blur-bg rounded">{{ recipe.title }}</p>
+              <p class="fs-4 p-2 text-light blur-bg rounded">{{ recipe.title }}</p>
             </span>
           </div>
-          <div v-if="account == recipe.creatorId" class="text-end">
-            <button @click="deleteRecipe(recipe.id)" class="btn btn-outline-danger"><i
-                class="mdi mdi-delete"></i></button>
-          </div>
+        </div>
+        <div v-if="account == recipe.creatorId" class=" col-3 text-end">
+          <button @click="deleteRecipe(recipe.id)" class="btn btn-outline-danger blur-bg"><i
+              class="mdi mdi-delete fs-4"></i></button>
         </div>
       </section>
     </div>

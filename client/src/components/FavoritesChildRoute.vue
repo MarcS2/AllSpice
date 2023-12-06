@@ -134,6 +134,7 @@ export default {
 
     return {
       account,
+      isActive,
       favorites,
       activeRecipe: computed(() => AppState.activeRecipe),
       activeIngredient: computed(() => AppState.activeIngredients),
