@@ -28,14 +28,14 @@
             </span>
           </div>
         </div>
-        <div class="col-9">
+        <div class="col-8">
           <div role="button" data-bs-toggle="modal" :data-bs-target="'#modal_One'" @click="setActive(recipe.id)">
             <span class="d-flex">
               <p class="fs-4 p-2 text-light blur-bg rounded">{{ recipe.title }}</p>
             </span>
           </div>
         </div>
-        <div v-if="account == recipe.creatorId" class=" col-3 text-end">
+        <div v-if="account == recipe.creatorId" class=" col-3 text-end ">
           <button @click="deleteRecipe(recipe.id)" class="btn btn-outline-danger blur-bg"><i
               class="mdi mdi-delete fs-4"></i></button>
         </div>

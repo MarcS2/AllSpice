@@ -21,6 +21,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
         </div>
+
         <div class=" col-3 collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav me-auto">
             <li>
@@ -30,6 +31,9 @@
             </li>
           </ul>
           <!-- LOGIN COMPONENT HERE -->
+          <div class="me-4 mt-1">
+            <button class="btn btn-outline-primary">New Recipe +</button>
+          </div>
           <div>
             <button class="btn text-light" @click="toggleTheme"><i class="mdi"
                 :class="theme == 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'"></i></button>
@@ -59,6 +63,7 @@ import { logger } from "../utils/Logger";
 import { computeStyles } from "@popperjs/core";
 import { AppState } from "../AppState";
 import Pop from "../utils/Pop";
+import ModalComponent from "./ModalComponent.vue";
 export default {
   setup() {
     const search = ref('')
@@ -99,7 +104,7 @@ export default {
       }
     }
   },
-  components: { Login }
+  components: { Login, ModalComponent }
 }
 </script>
 

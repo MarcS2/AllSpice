@@ -19,8 +19,8 @@
       </section>
     </div>
   </section>
-  <section class="row px-4 mt-4">
-    <div v-for="recipe in recipes" :key="recipe.id" class="col-4 my-2">
+  <section class="row px-0 px-md-4 mt-4">
+    <div v-for="recipe in recipes" :key="recipe.id" class="col-12 col-md-4 my-2">
       <RecipeCard :recipe="recipe" />
     </div>
   </section>
