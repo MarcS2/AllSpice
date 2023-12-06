@@ -1,7 +1,6 @@
 <template>
   <section class="row justify-content-center">
     <div class="col-12 col-md-6 mt-3 shadow rounded-pill">
-      <h1></h1>
       <section class="row">
         <div class="col-4 text-center fs-5 border-bottom border-primary border-3 rounded-left">
           My Recipes

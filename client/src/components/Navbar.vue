@@ -1,20 +1,15 @@
 <template>
   <nav class="row navbar navbar-expand-sm navbar-dark px-3 ">
-    <!-- <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
-      </div>
-    </router-link> -->
     <div class="col-12">
       <section class="row justify-content-between">
         <div class="col-3">
           <div class="p-2  mt-2 d-flex align-items-center">
             <div class="">
-              <input @keyup.enter="filterRecipes()" v-model="search" class="rounded-pill " type="text"
+              <input @keyup.enter="getRecipesByQuery()" v-model="search" class="rounded-pill " type="text"
                 placeholder="Search By Category">
             </div>
             <div>
-              <i @click="filterRecipes()" class="mdi mdi-magnify fs-3 " title="search" role="button"></i>
+              <i @click="getRecipesByQuery()" class="mdi mdi-magnify fs-3 " title="search" role="button"></i>
             </div>
           </div>
         </div>
@@ -30,8 +25,8 @@
           <ul class="navbar-nav me-auto">
             <li>
               <!-- <router-link :to="{ name: 'About' }" class="btn text-success lighten-30 selectable text-uppercase">
-              About
-            </router-link> -->
+                About
+              </router-link> -->
             </li>
           </ul>
           <!-- LOGIN COMPONENT HERE -->
@@ -44,6 +39,15 @@
       </section>
     </div>
   </nav>
+  <section class="row ">
+    <div class="col-12" v-if="search != ''" v-for="category in filterRecipes()" :key="category">
+      <div class="ms-4 d-flex">
+        <div class="rounded mb-1" style="background-color: rgba(0, 0, 0, 0.368); ">
+          <p class="mb-0">{{ category }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -54,6 +58,7 @@ import { recipesService } from "../services/RecipesService";
 import { logger } from "../utils/Logger";
 import { computeStyles } from "@popperjs/core";
 import { AppState } from "../AppState";
+import Pop from "../utils/Pop";
 export default {
   setup() {
     const search = ref('')
@@ -80,8 +85,17 @@ export default {
         saveState('theme', theme.value)
       },
 
+      async getRecipesByQuery() {
+        try {
+          const query = search.value
+          await recipesService.getRecipesByQuery(query)
+        } catch (error) {
+          Pop.error(error)
+        }
+      },
+
       filterRecipes() {
-        return categories.filter(category => category.includes(search.value.toLocaleLowerCase()))
+        return categories.filter(category => category.toLowerCase().includes(search.value.toLocaleLowerCase()))
       }
     }
   },
@@ -101,6 +115,7 @@ a:hover {
 /* .navbar {
   position: absolute;
 } */
+
 
 .navbar-nav .router-link-exact-active {
   border-bottom: 2px solid var(--bs-success);

@@ -24,6 +24,10 @@ class RecipesService {
     return res.data
   }
 
+  async getRecipesByQuery(query) {
+    const res = await api.get()
+  }
+
   getMyRecipes(creatorId) {
     const recipes = AppState.recipes.filter(recipe => recipe.creatorId == creatorId)
     AppState.recipes = recipes
