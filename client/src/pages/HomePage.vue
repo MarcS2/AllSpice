@@ -29,7 +29,7 @@ export default {
     })
 
     function checkRoute() {
-      if (route.fullPath == '/favorite' && !account.id) {
+      if (route.fullPath == '/favorite' || '/recipe' && !account.id) {
         router.push('/')
       }
     }

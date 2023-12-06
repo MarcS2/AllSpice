@@ -24,6 +24,11 @@ class RecipesService {
     return res.data
   }
 
+  getMyRecipes(creatorId) {
+    const recipes = AppState.recipes.filter(recipe => recipe.creatorId == creatorId)
+    AppState.recipes = recipes
+  }
+
   async setActiveRecipe(recipeId) {
     const recipe = await this.getRecipeById(recipeId)
     AppState.activeRecipe = new Recipe(recipe)

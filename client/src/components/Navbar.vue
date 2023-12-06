@@ -11,7 +11,7 @@
           <div class="p-2  mt-2 d-flex align-items-center">
             <div class="">
               <input @keyup.enter="filterRecipes()" v-model="search" class="rounded-pill " type="text"
-                placeholder="Search">
+                placeholder="Search By Category">
             </div>
             <div>
               <i @click="filterRecipes()" class="mdi mdi-magnify fs-3 " title="search" role="button"></i>
